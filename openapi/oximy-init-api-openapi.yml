@@ -1,0 +1,149 @@
+openapi: 3.1.0
+info:
+  title: Oximy Public Init API
+  version: '1.0'
+  summary: Telemetry ingestion and AI-usage policy enforcement for LLM applications.
+  description: The Oximy Public API backs the official Oximy SDKs. It initializes a project (settings + policy), ingests LLM telemetry events, serves the active policy configuration, and evaluates content against server-side (SLM) policy rules. This description was reconstructed faithfully from the published `oximy` npm SDK (v0.0.7) source — endpoint paths, HTTP methods, auth headers, and request and response shapes are taken verbatim from the SDK; it is not an official Oximy-published OpenAPI document.
+  contact:
+    name: Oximy Support
+    email: support@oximy.com
+    url: https://oximy.com
+  x-logo:
+    url: https://oximy.com
+servers:
+- url: https://api.oximy.com
+  description: Production
+security:
+- bearerAuth: []
+  projectId: []
+tags:
+- name: Init
+  description: Project bootstrap — settings and policy configuration.
+paths:
+  /v1/init:
+    get:
+      operationId: initProject
+      tags:
+      - Init
+      summary: Initialize project
+      description: Fetches project settings (telemetry/policy enabled, policy mode) and the active policy configuration for the authenticated project. Called once on SDK startup and again when a telemetry response reports a changed config version.
+      responses:
+        '200':
+          description: Project settings and policy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitResponse'
+        '401':
+          description: Missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    PolicyRule:
+      type: object
+      properties:
+        id:
+          type: string
+        enabled:
+          type: boolean
+        name:
+          type: string
+        description:
+          type: string
+        tier:
+          type: string
+          enum:
+          - local
+          - slm
+        target:
+          type: object
+          properties:
+            scope:
+              type: string
+              enum:
+              - input
+              - output
+              - tool_call
+              - tool_result
+              - mcp
+            path:
+              type: string
+        severity:
+          type: string
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+    PolicyMode:
+      type: string
+      enum:
+      - shadow
+      - quarantine
+      - enforce
+    Error:
+      type: object
+      description: Fallback error envelope (SDK-side OximyError shape).
+      properties:
+        code:
+          type: string
+          enum:
+          - init_failed
+          - telemetry_failed
+          - policy_fetch_failed
+          - policy_evaluation_failed
+          - invalid_config
+          - network_error
+          - timeout
+          - unknown
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    PolicyConfig:
+      type: object
+      properties:
+        version:
+          type: integer
+        mode:
+          $ref: '#/components/schemas/PolicyMode'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+    InitResponse:
+      type: object
+      properties:
+        projectId:
+          type: string
+        projectName:
+          type: string
+        configVersion:
+          type: integer
+        settings:
+          type: object
+          properties:
+            telemetryEnabled:
+              type: boolean
+            policyEnabled:
+              type: boolean
+            policyMode:
+              $ref: '#/components/schemas/PolicyMode'
+        policy:
+          oneOf:
+          - $ref: '#/components/schemas/PolicyConfig'
+          - type: 'null'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Project API key presented as `Authorization: Bearer <apiKey>`. Keys use the `ox_` prefix.'
+    projectId:
+      type: apiKey
+      in: header
+      name: X-Project-Id
+      description: Project identifier (`proj_` prefix). Sent alongside the bearer key on init and event ingestion.

@@ -1,0 +1,200 @@
+openapi: 3.1.0
+info:
+  title: Oximy Public Init Telemetry API
+  version: '1.0'
+  summary: Telemetry ingestion and AI-usage policy enforcement for LLM applications.
+  description: The Oximy Public API backs the official Oximy SDKs. It initializes a project (settings + policy), ingests LLM telemetry events, serves the active policy configuration, and evaluates content against server-side (SLM) policy rules. This description was reconstructed faithfully from the published `oximy` npm SDK (v0.0.7) source — endpoint paths, HTTP methods, auth headers, and request and response shapes are taken verbatim from the SDK; it is not an official Oximy-published OpenAPI document.
+  contact:
+    name: Oximy Support
+    email: support@oximy.com
+    url: https://oximy.com
+  x-logo:
+    url: https://oximy.com
+servers:
+- url: https://api.oximy.com
+  description: Production
+security:
+- bearerAuth: []
+  projectId: []
+tags:
+- name: Telemetry
+  description: LLM request/response event ingestion.
+paths:
+  /v1/events:
+    post:
+      operationId: ingestEvent
+      tags:
+      - Telemetry
+      summary: Ingest a telemetry event
+      description: Submits a single normalized LLM interaction event (request/response, usage, timing, outcome, context, and any policy result). The SDK fires this fire-and-forget with a short timeout (default 100ms) and fails open.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OximyEvent'
+      responses:
+        '200':
+          description: Event received.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'
+        '401':
+          description: Missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    OximyEvent:
+      type: object
+      required:
+      - id
+      - timestamp
+      - source
+      - raw
+      - timing
+      - outcome
+      properties:
+        id:
+          type: string
+          description: Event id (evt_ prefix).
+        timestamp:
+          type: string
+          format: date-time
+        source:
+          type: object
+          properties:
+            sdkVersion:
+              type: string
+            sdkLanguage:
+              type: string
+              enum:
+              - node
+              - python
+            provider:
+              type: string
+              enum:
+              - openai
+              - anthropic
+              - google
+              - mistral
+              - cohere
+              - openrouter
+              - azure
+              - bedrock
+              - groq
+              - together
+              - fireworks
+              - perplexity
+              - ollama
+              - custom
+            apiType:
+              type: string
+            eventType:
+              type: string
+              enum:
+              - completion
+              - embedding
+              - image
+              - audio
+              - moderation
+              - file
+              - assistant
+              - thread
+              - tool
+              - other
+        raw:
+          type: object
+          properties:
+            request: {}
+            response: {}
+        normalized:
+          type: object
+          additionalProperties: true
+        timing:
+          type: object
+          properties:
+            startedAt:
+              type: string
+            endedAt:
+              type: string
+            durationMs:
+              type: number
+            ttftMs:
+              type: number
+        outcome:
+          type: object
+          properties:
+            success:
+              type: boolean
+            finishReason:
+              type: string
+            error:
+              type: object
+              properties:
+                type:
+                  type: string
+                message:
+                  type: string
+                code:
+                  type: string
+                statusCode:
+                  type: integer
+        context:
+          type: object
+          properties:
+            userId:
+              type: string
+            sessionId:
+              type: string
+            traceId:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+            metadata:
+              type: object
+              additionalProperties: true
+    EventResponse:
+      type: object
+      properties:
+        received:
+          type: boolean
+        eventId:
+          type: string
+        configVersion:
+          type: integer
+    Error:
+      type: object
+      description: Fallback error envelope (SDK-side OximyError shape).
+      properties:
+        code:
+          type: string
+          enum:
+          - init_failed
+          - telemetry_failed
+          - policy_fetch_failed
+          - policy_evaluation_failed
+          - invalid_config
+          - network_error
+          - timeout
+          - unknown
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Project API key presented as `Authorization: Bearer <apiKey>`. Keys use the `ox_` prefix.'
+    projectId:
+      type: apiKey
+      in: header
+      name: X-Project-Id
+      description: Project identifier (`proj_` prefix). Sent alongside the bearer key on init and event ingestion.
