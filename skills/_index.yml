@@ -1,0 +1,12 @@
+generated: '2026-07-20'
+method: generated
+source: openapi/oximy-public-api-openapi.yml
+skills:
+  - file: oximy-instrument-llm-telemetry.md
+    name: Instrument LLM telemetry with Oximy
+    api: openapi/oximy-public-api-openapi.yml
+    operations: [initProject, ingestEvent]
+  - file: oximy-evaluate-content-policy.md
+    name: Evaluate content against Oximy policy
+    api: openapi/oximy-public-api-openapi.yml
+    operations: [getPolicy, evaluatePolicy]

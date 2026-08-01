@@ -1,0 +1,23 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/oximy-public-api-openapi.yml + npm oximy SDK v0.0.7
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://docs.oximy.com/docs/developer/public-api
+deprecation:
+  policy_url: null
+  sunset_header: false
+  detail: No public deprecation policy or Sunset/Deprecation header support documented.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+deprecated_operations: []
+maturity:
+  detail: >-
+    Early-stage (Y Combinator W26). The SDK is pre-1.0 (v0.0.7, first published
+    2025-12-02); the Public API is under active documentation at docs.oximy.com.
+notes: >-
+  No status page, SLA, or deprecation policy is published as of this pass — so no
+  StatusPage or Deprecation canonical pointer is emitted (nothing to point at).

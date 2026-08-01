@@ -1,0 +1,30 @@
+generated: '2026-07-20'
+method: probed
+source: live probes of /.well-known/* on Oximy hosts
+hosts:
+  - host: https://api.oximy.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+  - host: https://oximy.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+notes: >-
+  No .well-known discovery documents are published on either the API host
+  (api.oximy.com) or the marketing host (oximy.com). Recorded as a valid empty
+  result — nothing was fabricated. No raw files saved.

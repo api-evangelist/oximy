@@ -1,0 +1,53 @@
+generated: '2026-07-20'
+method: derived
+source: >-
+  npm oximy SDK v0.0.7 (constants/telemetry/client) + openapi/oximy-public-api-openapi.yml
+authentication:
+  style: bearer + project header
+  detail: >-
+    `Authorization: Bearer <apiKey>` (ox_ prefix) plus `X-Project-Id: <projectId>`
+    (proj_ prefix). See authentication/oximy-authentication.yml.
+idempotency:
+  supported: false
+  detail: >-
+    No idempotency-key header is documented or sent by the SDK. Event ingestion
+    is fire-and-forget; each event carries a client-generated evt_ id but there is
+    no server idempotency contract.
+pagination:
+  supported: false
+  detail: No list endpoints in the Public API; nothing to paginate.
+request_tracing:
+  supported: true
+  detail: >-
+    Per-request context supports traceId, parentEventId, spanName, sessionId, and
+    userId; each event has a client-generated id (evt_ prefix). This is
+    distributed-trace context on the telemetry payload, not a response request-id
+    header.
+versioning:
+  scheme: uri-path
+  current: v1
+  detail: All endpoints are under /v1/.
+config_versioning:
+  supported: true
+  detail: >-
+    Responses carry a configVersion; when the version advances the SDK re-fetches
+    /v1/init to pick up new settings/policy.
+error_envelope:
+  shape: >-
+    SDK-side OximyError { code, message, details } with a fixed code enum
+    (init_failed, telemetry_failed, policy_fetch_failed, policy_evaluation_failed,
+    invalid_config, network_error, timeout, unknown). See errors/oximy-problem-types.yml.
+  problem_json: false
+rate_limit_signaling:
+  documented: false
+  detail: >-
+    No rate-limit response headers are documented. Policy rules can themselves
+    enforce rate/cost limits per user/session/global as a governance control.
+fail_open:
+  detail: >-
+    The SDK never blocks the host application — 100ms telemetry timeout, silent
+    failure on network errors, falls back to enabled if config fetch fails.
+cross_links:
+  authentication: authentication/oximy-authentication.yml
+  errors: errors/oximy-problem-types.yml
+  lifecycle: lifecycle/oximy-lifecycle.yml

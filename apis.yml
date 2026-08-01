@@ -1,22 +1,148 @@
 aid: oximy
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/oximy.png
 name: Oximy
-description: Oximy is a company surfaced as a portfolio company of y-combinator and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Oximy is an AI adoption and governance platform — "the AI adoption engine for
+  every company." It gives organizations visibility into how their people and
+  applications use AI tools across the enterprise (tracking thousands of AI tools
+  across categories), surfaces risks and recommendations, and lets teams ask
+  natural-language questions about their AI usage. For developers, Oximy ships a
+  Public API (https://api.oximy.com) and an official TypeScript SDK that wrap any
+  OpenAI-compatible client to capture zero-overhead LLM telemetry and enforce
+  usage policy inline — PII detection and redaction, prompt-injection detection,
+  deny/allow lists, and token/cost/rate limits. Backed by Y Combinator (W26) and
+  Blume Ventures; founded by Naman Ambavi.
 url: https://raw.githubusercontent.com/api-evangelist/oximy/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - y-combinator
+- blume-ventures
 x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
 tags:
 - Company
-apis: []
+- AI Governance
+- LLM Observability
+- AI Adoption
+- Telemetry
+- Policy Enforcement
+- Artificial Intelligence
+- Developer Tools
+apis:
+- aid: oximy:oximy-init-api
+  name: Oximy Init API
+  description: Project bootstrap — settings and policy configuration.
+  humanURL: https://docs.oximy.com/docs/developer/public-api
+  baseURL: https://api.oximy.com
+  tags:
+  - Init
+  properties:
+  - type: OpenAPI
+    url: openapi/oximy-init-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oximy.com/docs/developer/public-api
+  - type: APIReference
+    url: https://docs.oximy.com/docs/developer/public-api
+- aid: oximy:oximy-policy-api
+  name: Oximy Policy API
+  description: Policy configuration and server-side rule evaluation.
+  humanURL: https://docs.oximy.com/docs/developer/public-api
+  baseURL: https://api.oximy.com
+  tags:
+  - Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/oximy-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oximy.com/docs/developer/public-api
+  - type: APIReference
+    url: https://docs.oximy.com/docs/developer/public-api
+- aid: oximy:oximy-telemetry-api
+  name: Oximy Telemetry API
+  description: LLM request/response event ingestion.
+  humanURL: https://docs.oximy.com/docs/developer/public-api
+  baseURL: https://api.oximy.com
+  tags:
+  - Telemetry
+  properties:
+  - type: OpenAPI
+    url: openapi/oximy-telemetry-api-openapi.yml
+  - type: Documentation
+    url: https://docs.oximy.com/docs/developer/public-api
+  - type: APIReference
+    url: https://docs.oximy.com/docs/developer/public-api
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: Website
+  url: https://oximy.com
+- type: DeveloperPortal
+  url: https://docs.oximy.com
+- type: Documentation
+  url: https://docs.oximy.com
+- type: APIReference
+  url: https://docs.oximy.com/docs/developer/public-api
+- type: GettingStarted
+  url: https://docs.oximy.com/docs/developer/public-api
+- type: Blog
+  url: https://oximy.com/blog
+- type: Support
+  url: https://oximy.com/contact
+- type: TermsOfService
+  url: https://oximy.com/terms
+- type: PrivacyPolicy
+  url: https://oximy.com/privacy
+- type: Packages
+  url: packages/oximy-packages.yml
+- type: SDKs
+  url: packages/oximy-packages.yml
+- type: MCPServer
+  url: mcp/oximy-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/oximy-llms.txt
+- type: WellKnown
+  url: well-known/oximy-well-known.yml
+- type: Conventions
+  url: conventions/oximy-conventions.yml
+- type: ErrorCatalog
+  url: errors/oximy-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/oximy-lifecycle.yml
+- type: ChangeLog
+  url: changelog/oximy-changelog.yml
+- type: Conformance
+  url: conformance/oximy-conformance.yml
+- type: DataModel
+  url: data-model/oximy-data-model.yml
+- type: AgenticAccess
+  url: agentic-access/oximy-agentic-access.yml
+- type: DomainSecurity
+  url: security/oximy-domain-security.yml
+- type: Authentication
+  url: authentication/oximy-authentication.yml
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 18
+  pass: local-v1

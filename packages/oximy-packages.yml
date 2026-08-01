@@ -1,0 +1,23 @@
+generated: '2026-07-20'
+method: searched
+source: https://www.npmjs.com/package/oximy
+packages:
+  - language: javascript
+    registry: npm
+    name: oximy
+    url: https://www.npmjs.com/package/oximy
+    install: npm install oximy
+    version: 0.0.7
+    official: true
+    description: >-
+      Official Oximy TypeScript SDK — zero-overhead observability and policy
+      enforcement for LLM applications. Wraps any OpenAI-compatible client and
+      captures telemetry automatically.
+notes: >-
+  Only the JavaScript/TypeScript SDK is published to a public registry as a
+  first-party Oximy library (author "Oximy" <support@oximy.com>, homepage
+  oximy.com). The `@oximy/*` scoped names (public-api-client, mcp-gateway) and
+  a Python SDK are referenced in the docs as internal monorepo packages but are
+  NOT published to npm/PyPI as of this pass (probed 404). A PyPI package named
+  "oximy" exists but is unrelated (no oximy.com linkage) and is not treated as
+  first-party.

@@ -1,0 +1,53 @@
+generated: '2026-07-20'
+method: derived
+source: >-
+  npm oximy SDK v0.0.7 type definitions + openapi/oximy-public-api-openapi.yml
+entities:
+  - name: Project
+    id_prefix: proj_
+    description: The tenant/workspace scope. Owns settings, policy, and all events.
+    key_fields: [projectId, projectName, configVersion]
+  - name: ApiKey
+    id_prefix: ox_
+    description: Bearer credential authenticating a project.
+  - name: ProjectSettings
+    description: Toggles for telemetry/policy and the active policy mode.
+    key_fields: [telemetryEnabled, policyEnabled, policyMode]
+  - name: Event
+    id_prefix: evt_
+    description: A single normalized LLM interaction (request/response/usage/timing/outcome).
+    key_fields: [id, timestamp, source, timing, outcome, context]
+  - name: PolicyConfig
+    description: Versioned set of policy rules with a mode.
+    key_fields: [version, mode, rules]
+  - name: PolicyRule
+    description: One rule (local or slm tier) with a target scope, match, action, severity.
+    key_fields: [id, tier, target, match, action, severity]
+  - name: PolicyViolation
+    description: A rule hit recorded against an event.
+    key_fields: [ruleId, action, severity, detections]
+relationships:
+  - from: Project
+    to: ProjectSettings
+    type: has_one
+  - from: Project
+    to: PolicyConfig
+    type: has_one
+  - from: Project
+    to: Event
+    type: has_many
+  - from: Project
+    to: ApiKey
+    type: has_many
+  - from: PolicyConfig
+    to: PolicyRule
+    type: has_many
+    via: rules
+  - from: Event
+    to: PolicyViolation
+    type: has_many
+    via: policy.violations
+  - from: PolicyViolation
+    to: PolicyRule
+    type: belongs_to
+    via: ruleId

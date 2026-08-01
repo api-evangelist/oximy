@@ -1,0 +1,370 @@
+openapi: 3.1.0
+info:
+  title: Oximy Public API
+  version: "1.0"
+  summary: Telemetry ingestion and AI-usage policy enforcement for LLM applications.
+  description: >-
+    The Oximy Public API backs the official Oximy SDKs. It initializes a project
+    (settings + policy), ingests LLM telemetry events, serves the active policy
+    configuration, and evaluates content against server-side (SLM) policy rules.
+    This description was reconstructed faithfully from the published `oximy` npm
+    SDK (v0.0.7) source — endpoint paths, HTTP methods, auth headers, and request
+    and response shapes are taken verbatim from the SDK; it is not an official
+    Oximy-published OpenAPI document.
+  contact:
+    name: Oximy Support
+    email: support@oximy.com
+    url: https://oximy.com
+  x-logo:
+    url: https://oximy.com
+servers:
+  - url: https://api.oximy.com
+    description: Production
+security:
+  - bearerAuth: []
+    projectId: []
+tags:
+  - name: Init
+    description: Project bootstrap — settings and policy configuration.
+  - name: Telemetry
+    description: LLM request/response event ingestion.
+  - name: Policy
+    description: Policy configuration and server-side rule evaluation.
+paths:
+  /v1/init:
+    get:
+      operationId: initProject
+      tags:
+        - Init
+      summary: Initialize project
+      description: >-
+        Fetches project settings (telemetry/policy enabled, policy mode) and the
+        active policy configuration for the authenticated project. Called once on
+        SDK startup and again when a telemetry response reports a changed config
+        version.
+      responses:
+        "200":
+          description: Project settings and policy.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InitResponse"
+        "401":
+          description: Missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/events:
+    post:
+      operationId: ingestEvent
+      tags:
+        - Telemetry
+      summary: Ingest a telemetry event
+      description: >-
+        Submits a single normalized LLM interaction event (request/response,
+        usage, timing, outcome, context, and any policy result). The SDK fires
+        this fire-and-forget with a short timeout (default 100ms) and fails open.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OximyEvent"
+      responses:
+        "200":
+          description: Event received.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventResponse"
+        "401":
+          description: Missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/policy:
+    get:
+      operationId: getPolicy
+      tags:
+        - Policy
+      summary: Get active policy
+      description: Returns the current policy configuration (version, mode, rules) for the project.
+      responses:
+        "200":
+          description: Policy configuration.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  policy:
+                    $ref: "#/components/schemas/PolicyConfig"
+        "401":
+          description: Missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/evaluate:
+    post:
+      operationId: evaluatePolicy
+      tags:
+        - Policy
+      summary: Evaluate content against SLM policy rules
+      description: >-
+        Evaluates request or response content against server-side (SLM-tier)
+        policy rules — AI-powered PII detection, prompt-injection detection, and
+        custom content classification. Supports single-rule and batch-rule
+        request shapes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EvaluateRequest"
+      responses:
+        "200":
+          description: Evaluation result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EvaluateResponse"
+        "401":
+          description: Missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Project API key presented as `Authorization: Bearer <apiKey>`. Keys use
+        the `ox_` prefix.
+    projectId:
+      type: apiKey
+      in: header
+      name: X-Project-Id
+      description: >-
+        Project identifier (`proj_` prefix). Sent alongside the bearer key on
+        init and event ingestion.
+  schemas:
+    Error:
+      type: object
+      description: Fallback error envelope (SDK-side OximyError shape).
+      properties:
+        code:
+          type: string
+          enum:
+            - init_failed
+            - telemetry_failed
+            - policy_fetch_failed
+            - policy_evaluation_failed
+            - invalid_config
+            - network_error
+            - timeout
+            - unknown
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    InitResponse:
+      type: object
+      properties:
+        projectId:
+          type: string
+        projectName:
+          type: string
+        configVersion:
+          type: integer
+        settings:
+          type: object
+          properties:
+            telemetryEnabled:
+              type: boolean
+            policyEnabled:
+              type: boolean
+            policyMode:
+              $ref: "#/components/schemas/PolicyMode"
+        policy:
+          oneOf:
+            - $ref: "#/components/schemas/PolicyConfig"
+            - type: "null"
+    EventResponse:
+      type: object
+      properties:
+        received:
+          type: boolean
+        eventId:
+          type: string
+        configVersion:
+          type: integer
+    PolicyMode:
+      type: string
+      enum:
+        - shadow
+        - quarantine
+        - enforce
+    PolicyConfig:
+      type: object
+      properties:
+        version:
+          type: integer
+        mode:
+          $ref: "#/components/schemas/PolicyMode"
+        rules:
+          type: array
+          items:
+            $ref: "#/components/schemas/PolicyRule"
+    PolicyRule:
+      type: object
+      properties:
+        id:
+          type: string
+        enabled:
+          type: boolean
+        name:
+          type: string
+        description:
+          type: string
+        tier:
+          type: string
+          enum: [local, slm]
+        target:
+          type: object
+          properties:
+            scope:
+              type: string
+              enum: [input, output, tool_call, tool_result, mcp]
+            path:
+              type: string
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+    OximyEvent:
+      type: object
+      required: [id, timestamp, source, raw, timing, outcome]
+      properties:
+        id:
+          type: string
+          description: Event id (evt_ prefix).
+        timestamp:
+          type: string
+          format: date-time
+        source:
+          type: object
+          properties:
+            sdkVersion:
+              type: string
+            sdkLanguage:
+              type: string
+              enum: [node, python]
+            provider:
+              type: string
+              enum: [openai, anthropic, google, mistral, cohere, openrouter, azure, bedrock, groq, together, fireworks, perplexity, ollama, custom]
+            apiType:
+              type: string
+            eventType:
+              type: string
+              enum: [completion, embedding, image, audio, moderation, file, assistant, thread, tool, other]
+        raw:
+          type: object
+          properties:
+            request: {}
+            response: {}
+        normalized:
+          type: object
+          additionalProperties: true
+        timing:
+          type: object
+          properties:
+            startedAt:
+              type: string
+            endedAt:
+              type: string
+            durationMs:
+              type: number
+            ttftMs:
+              type: number
+        outcome:
+          type: object
+          properties:
+            success:
+              type: boolean
+            finishReason:
+              type: string
+            error:
+              type: object
+              properties:
+                type: { type: string }
+                message: { type: string }
+                code: { type: string }
+                statusCode: { type: integer }
+        context:
+          type: object
+          properties:
+            userId: { type: string }
+            sessionId: { type: string }
+            traceId: { type: string }
+            tags:
+              type: array
+              items: { type: string }
+            metadata:
+              type: object
+              additionalProperties: true
+    EvaluateRequest:
+      type: object
+      description: >-
+        SLM rule evaluation request. The SDK sends either a single-rule shape
+        (rule_id + content + context) or a batch shape (projectId + requestId +
+        content + rules[]).
+      properties:
+        projectId:
+          type: string
+        requestId:
+          type: string
+        rule_id:
+          type: string
+        content:
+          type: string
+        rules:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              match: { type: object, additionalProperties: true }
+              action: { type: object, additionalProperties: true }
+              target: { type: object, additionalProperties: true }
+        context:
+          type: object
+          additionalProperties: true
+    EvaluateResponse:
+      type: object
+      properties:
+        triggered:
+          type: boolean
+        confidence:
+          type: number
+        matches:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        transformedContent:
+          type: string
+        detections:
+          type: array
+          items:
+            type: object
+            properties:
+              type: { type: string }
+              value: { type: string }
+              start: { type: integer }
+              end: { type: integer }
+              confidence: { type: number }

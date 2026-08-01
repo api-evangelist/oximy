@@ -1,0 +1,30 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/oximy-public-api-openapi.yml + npm oximy SDK v0.0.7
+standards:
+  - id: http-bearer-auth
+    conforms: true
+    evidence: Authorization Bearer token scheme (RFC 6750 style) used on all endpoints.
+  - id: oauth2
+    conforms: false
+    evidence: No oauth2 securityScheme; static project API keys only.
+  - id: oidc
+    conforms: false
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors use a custom { code, message, details } envelope, not application/problem+json.
+  - id: json-api
+    conforms: false
+  - id: pagination
+    conforms: false
+    evidence: No list/collection endpoints.
+  - id: idempotency
+    conforms: false
+    evidence: No idempotency-key contract.
+  - id: openapi-3.1
+    conforms: true
+    evidence: Reconstructed spec is OpenAPI 3.1.0 (derived from the published SDK).
+notes: >-
+  Standards conformance is DERIVED from the SDK-reconstructed spec; Oximy publishes
+  no formal compliance program (SOC 2 / ISO 27001 / etc.) that this pass could
+  verify, so no `Compliance` pointer is emitted.

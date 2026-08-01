@@ -1,0 +1,25 @@
+generated: '2026-07-20'
+method: searched
+source: https://registry.npmjs.org/oximy
+scheme: semver
+scope: oximy TypeScript SDK (npm)
+current_version: 0.0.7
+notes: >-
+  Oximy does not publish a dated product changelog page that this pass could find;
+  the closest real dated release history is the npm publish timeline of the
+  official `oximy` SDK, captured below.
+entries:
+  - version: 0.0.7
+    date: '2025-12-20'
+  - version: 0.0.6
+    date: '2025-12-12'
+  - version: 0.0.5
+    date: '2025-12-12'
+  - version: 0.0.4
+    date: '2025-12-12'
+  - version: 0.0.3
+    date: '2025-12-06'
+  - version: 0.0.2
+    date: '2025-12-06'
+  - version: 0.0.1
+    date: '2025-12-02'

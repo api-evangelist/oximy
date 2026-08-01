@@ -1,0 +1,42 @@
+generated: '2026-07-20'
+method: derived
+format: custom
+source: >-
+  openapi/oximy-public-api-openapi.yml (HTTP responses) + npm oximy SDK
+  OximyErrorCode enum
+envelope:
+  shape: "{ code, message, details? }"
+  note: >-
+    Not RFC 9457 problem+json. The SDK models failures with a fixed OximyErrorCode
+    enum; the API returns 401 on missing/invalid credentials.
+http_errors:
+  - status: 401
+    title: Unauthorized
+    detail: Missing or invalid API key / project id.
+    source_operations:
+      - openapi/oximy-public-api-openapi.yml#initProject
+      - openapi/oximy-public-api-openapi.yml#ingestEvent
+      - openapi/oximy-public-api-openapi.yml#getPolicy
+      - openapi/oximy-public-api-openapi.yml#evaluatePolicy
+sdk_error_codes:
+  - code: init_failed
+    meaning: Project init (/v1/init) could not complete; SDK falls back to defaults.
+  - code: telemetry_failed
+    meaning: Event ingestion (/v1/events) failed; dropped silently (fail-open).
+  - code: policy_fetch_failed
+    meaning: Policy fetch (/v1/policy or init) failed.
+  - code: policy_evaluation_failed
+    meaning: SLM evaluation (/v1/evaluate) failed; treated as not-triggered.
+  - code: invalid_config
+    meaning: Missing apiKey or projectId at construction time (thrown locally).
+  - code: network_error
+    meaning: Transport-level failure reaching api.oximy.com.
+  - code: timeout
+    meaning: Request exceeded the configured timeout (default 100ms).
+  - code: unknown
+    meaning: Unclassified error.
+policy_error:
+  code: policy_blocked
+  meaning: >-
+    OximyPolicyError thrown in enforce mode when a rule action is `block`; carries
+    the matched PolicyViolation.

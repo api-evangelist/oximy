@@ -1,0 +1,26 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/oximy-public-api-openapi.yml
+docs: https://docs.oximy.com/docs/developer/public-api
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: 'Project API key presented as `Authorization: Bearer <apiKey>`. Keys use the
+    `ox_` prefix.'
+  sources:
+  - openapi/oximy-public-api-openapi.yml
+- name: projectId
+  type: apiKey
+  in: header
+  parameter: X-Project-Id
+  description: Project identifier (`proj_` prefix). Sent alongside the bearer key on init and
+    event ingestion.
+  sources:
+  - openapi/oximy-public-api-openapi.yml

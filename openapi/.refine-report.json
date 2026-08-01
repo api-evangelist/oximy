@@ -1,0 +1,18 @@
+{
+  "provider": "oximy",
+  "sources": [
+    "oximy-init-api-openapi.yml",
+    "oximy-policy-api-openapi.yml",
+    "oximy-telemetry-api-openapi.yml"
+  ],
+  "outputs": [
+    "oximy-init-api-openapi.yml",
+    "oximy-policy-api-openapi.yml",
+    "oximy-telemetry-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

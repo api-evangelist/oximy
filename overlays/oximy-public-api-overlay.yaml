@@ -1,0 +1,21 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Oximy Public API
+  version: 1.0.0
+extends: openapi/oximy-public-api-openapi.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: true
+      x-apievangelist-provenance: >-
+        Spec reconstructed from the published `oximy` npm SDK v0.0.7 — endpoints,
+        methods, auth headers, and schemas taken verbatim from SDK source. Not an
+        Oximy-published OpenAPI.
+  - target: $.info
+    update:
+      x-api-category: AI Governance / LLM Observability
+  - target: $.tags
+    update:
+      - name: Init
+      - name: Telemetry
+      - name: Policy
