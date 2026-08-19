@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oximy Public Init Telemetry API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Telemetry",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Ingest a telemetry event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.oximy.com/v1/events",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submits a single normalized LLM interaction event (request/response, usage, timing, outcome, context, and any policy result). The SDK fires this fire-and-forget with a short timeout (default 100ms) and fails open."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

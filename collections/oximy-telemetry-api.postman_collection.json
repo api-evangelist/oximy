@@ -1,0 +1,194 @@
+{
+  "item": [
+    {
+      "id": "c4315dd5-0505-4709-a271-f6ff5b7d6c8c",
+      "name": "Telemetry",
+      "description": {
+        "content": "LLM request/response event ingestion.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "307e4851-425d-4a1a-a1a3-6985f9fa968d",
+          "name": "Ingest a telemetry event",
+          "request": {
+            "name": "Ingest a telemetry event",
+            "description": {
+              "content": "Submits a single normalized LLM interaction event (request/response, usage, timing, outcome, context, and any policy result). The SDK fires this fire-and-forget with a short timeout (default 100ms) and fails open.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"timestamp\": \"<dateTime>\",\n  \"source\": {\n    \"sdkVersion\": \"<string>\",\n    \"sdkLanguage\": \"<string>\",\n    \"provider\": \"<string>\",\n    \"apiType\": \"<string>\",\n    \"eventType\": \"<string>\"\n  },\n  \"raw\": {\n    \"request\": \"\",\n    \"response\": \"\"\n  },\n  \"timing\": {\n    \"startedAt\": \"<string>\",\n    \"endedAt\": \"<string>\",\n    \"durationMs\": \"<number>\",\n    \"ttftMs\": \"<number>\"\n  },\n  \"outcome\": {\n    \"success\": \"<boolean>\",\n    \"finishReason\": \"<string>\",\n    \"error\": {\n      \"type\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"statusCode\": \"<integer>\"\n    }\n  },\n  \"normalized\": {\n    \"key_0\": 5187\n  },\n  \"context\": {\n    \"userId\": \"<string>\",\n    \"sessionId\": \"<string>\",\n    \"traceId\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"metadata\": {\n      \"key_0\": 4548.8400868809795,\n      \"key_1\": false\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3b31b3f7-4e6d-4fd2-b27a-8a7623d95bd6",
+              "name": "Event received.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"timestamp\": \"<dateTime>\",\n  \"source\": {\n    \"sdkVersion\": \"<string>\",\n    \"sdkLanguage\": \"<string>\",\n    \"provider\": \"<string>\",\n    \"apiType\": \"<string>\",\n    \"eventType\": \"<string>\"\n  },\n  \"raw\": {\n    \"request\": \"\",\n    \"response\": \"\"\n  },\n  \"timing\": {\n    \"startedAt\": \"<string>\",\n    \"endedAt\": \"<string>\",\n    \"durationMs\": \"<number>\",\n    \"ttftMs\": \"<number>\"\n  },\n  \"outcome\": {\n    \"success\": \"<boolean>\",\n    \"finishReason\": \"<string>\",\n    \"error\": {\n      \"type\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"statusCode\": \"<integer>\"\n    }\n  },\n  \"normalized\": {\n    \"key_0\": 2070,\n    \"key_1\": 6242.18358778885\n  },\n  \"context\": {\n    \"userId\": \"<string>\",\n    \"sessionId\": \"<string>\",\n    \"traceId\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"metadata\": {\n      \"key_0\": true,\n      \"key_1\": 8282,\n      \"key_2\": 9740.651896841971\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"received\": true,\n  \"eventId\": \"string\",\n  \"configVersion\": 2916\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14f03124-7ed9-4fad-8b9a-8208a8e83d6f",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"timestamp\": \"<dateTime>\",\n  \"source\": {\n    \"sdkVersion\": \"<string>\",\n    \"sdkLanguage\": \"<string>\",\n    \"provider\": \"<string>\",\n    \"apiType\": \"<string>\",\n    \"eventType\": \"<string>\"\n  },\n  \"raw\": {\n    \"request\": \"\",\n    \"response\": \"\"\n  },\n  \"timing\": {\n    \"startedAt\": \"<string>\",\n    \"endedAt\": \"<string>\",\n    \"durationMs\": \"<number>\",\n    \"ttftMs\": \"<number>\"\n  },\n  \"outcome\": {\n    \"success\": \"<boolean>\",\n    \"finishReason\": \"<string>\",\n    \"error\": {\n      \"type\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"statusCode\": \"<integer>\"\n    }\n  },\n  \"normalized\": {\n    \"key_0\": 2070,\n    \"key_1\": 6242.18358778885\n  },\n  \"context\": {\n    \"userId\": \"<string>\",\n    \"sessionId\": \"<string>\",\n    \"traceId\": \"<string>\",\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"metadata\": {\n      \"key_0\": true,\n      \"key_1\": 8282,\n      \"key_2\": 9740.651896841971\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"timeout\",\n  \"message\": \"string\",\n  \"details\": {\n    \"key_0\": 8192\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.oximy.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d45b360b-492c-4763-8370-deec15e46e9a",
+    "name": "Oximy Public Init Telemetry API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Oximy Public API backs the official Oximy SDKs. It initializes a project (settings + policy), ingests LLM telemetry events, serves the active policy configuration, and evaluates content against server-side (SLM) policy rules. This description was reconstructed faithfully from the published `oximy` npm SDK (v0.0.7) source — endpoint paths, HTTP methods, auth headers, and request and response shapes are taken verbatim from the SDK; it is not an official Oximy-published OpenAPI document.\n\nContact Support:\n Name: Oximy Support\n Email: support@oximy.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oximy Public Init API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Init",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initialize project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.oximy.com/v1/init"
+          },
+          "docs": "Fetches project settings (telemetry/policy enabled, policy mode) and the active policy configuration for the authenticated project. Called once on SDK startup and again when a telemetry response reports a changed config version."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

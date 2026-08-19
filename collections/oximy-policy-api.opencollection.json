@@ -1,0 +1,50 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Oximy Public Init Policy API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Policy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get active policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.oximy.com/v1/policy"
+          },
+          "docs": "Returns the current policy configuration (version, mode, rules) for the project."
+        },
+        {
+          "info": {
+            "name": "Evaluate content against SLM policy rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.oximy.com/v1/evaluate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Evaluates request or response content against server-side (SLM-tier) policy rules — AI-powered PII detection, prompt-injection detection, and custom content classification. Supports single-rule and batch-rule request shapes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,318 @@
+{
+  "item": [
+    {
+      "id": "8ac47752-2f48-46f0-bc29-5e78a31499dd",
+      "name": "Policy",
+      "description": {
+        "content": "Policy configuration and server-side rule evaluation.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6e914188-b4c5-422e-8990-8ec7e0063286",
+          "name": "Get active policy",
+          "request": {
+            "name": "Get active policy",
+            "description": {
+              "content": "Returns the current policy configuration (version, mode, rules) for the project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "policy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e39f3159-f66b-45aa-b199-986ee2be43bd",
+              "name": "Policy configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"policy\": {\n    \"version\": 6570,\n    \"mode\": \"shadow\",\n    \"rules\": [\n      {\n        \"id\": \"string\",\n        \"enabled\": true,\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"tier\": \"local\",\n        \"target\": {\n          \"scope\": \"output\",\n          \"path\": \"string\"\n        },\n        \"severity\": \"critical\"\n      },\n      {\n        \"id\": \"string\",\n        \"enabled\": false,\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"tier\": \"local\",\n        \"target\": {\n          \"scope\": \"mcp\",\n          \"path\": \"string\"\n        },\n        \"severity\": \"medium\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6610c842-4898-495c-829f-75d0ad8bd80f",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "policy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"timeout\",\n  \"message\": \"string\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe21597f-0bc3-447a-9a95-e5b3ca3972a2",
+          "name": "Evaluate content against SLM policy rules",
+          "request": {
+            "name": "Evaluate content against SLM policy rules",
+            "description": {
+              "content": "Evaluates request or response content against server-side (SLM-tier) policy rules — AI-powered PII detection, prompt-injection detection, and custom content classification. Supports single-rule and batch-rule request shapes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "evaluate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"<string>\",\n  \"requestId\": \"<string>\",\n  \"rule_id\": \"<string>\",\n  \"content\": \"<string>\",\n  \"rules\": [\n    {\n      \"id\": \"<string>\",\n      \"match\": {\n        \"key_0\": 4858\n      },\n      \"action\": {\n        \"key_0\": false\n      },\n      \"target\": {\n        \"key_0\": 4412,\n        \"key_1\": \"string\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"match\": {\n        \"key_0\": false\n      },\n      \"action\": {\n        \"key_0\": 7515,\n        \"key_1\": \"string\"\n      },\n      \"target\": {\n        \"key_0\": 9491\n      }\n    }\n  ],\n  \"context\": {\n    \"key_0\": 3298,\n    \"key_1\": 7874,\n    \"key_2\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c2ad8656-94d0-4a67-8edb-05f9fb1724c5",
+              "name": "Evaluation result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "evaluate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"projectId\": \"<string>\",\n  \"requestId\": \"<string>\",\n  \"rule_id\": \"<string>\",\n  \"content\": \"<string>\",\n  \"rules\": [\n    {\n      \"id\": \"<string>\",\n      \"match\": {\n        \"key_0\": \"string\",\n        \"key_1\": 8678.853486593698,\n        \"key_2\": 2702.9643522776437\n      },\n      \"action\": {\n        \"key_0\": \"string\"\n      },\n      \"target\": {\n        \"key_0\": 9120.478359005649\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"match\": {\n        \"key_0\": false,\n        \"key_1\": \"string\",\n        \"key_2\": 4884.5411498398325,\n        \"key_3\": true\n      },\n      \"action\": {\n        \"key_0\": \"string\",\n        \"key_1\": 6198.422187428418,\n        \"key_2\": false,\n        \"key_3\": false,\n        \"key_4\": 1737.0981865735635\n      },\n      \"target\": {\n        \"key_0\": false,\n        \"key_1\": 5835\n      }\n    }\n  ],\n  \"context\": {\n    \"key_0\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"triggered\": false,\n  \"confidence\": 3495.956856039002,\n  \"matches\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 1075,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"transformedContent\": \"string\",\n  \"detections\": [\n    {\n      \"type\": \"string\",\n      \"value\": \"string\",\n      \"start\": 3996,\n      \"end\": 6623,\n      \"confidence\": 9400.01134677081\n    },\n    {\n      \"type\": \"string\",\n      \"value\": \"string\",\n      \"start\": 5330,\n      \"end\": 8742,\n      \"confidence\": 887.4050064128613\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f4810ec-86f8-45c7-9179-b21d7f93c86a",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "evaluate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"projectId\": \"<string>\",\n  \"requestId\": \"<string>\",\n  \"rule_id\": \"<string>\",\n  \"content\": \"<string>\",\n  \"rules\": [\n    {\n      \"id\": \"<string>\",\n      \"match\": {\n        \"key_0\": \"string\",\n        \"key_1\": 8678.853486593698,\n        \"key_2\": 2702.9643522776437\n      },\n      \"action\": {\n        \"key_0\": \"string\"\n      },\n      \"target\": {\n        \"key_0\": 9120.478359005649\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"match\": {\n        \"key_0\": false,\n        \"key_1\": \"string\",\n        \"key_2\": 4884.5411498398325,\n        \"key_3\": true\n      },\n      \"action\": {\n        \"key_0\": \"string\",\n        \"key_1\": 6198.422187428418,\n        \"key_2\": false,\n        \"key_3\": false,\n        \"key_4\": 1737.0981865735635\n      },\n      \"target\": {\n        \"key_0\": false,\n        \"key_1\": 5835\n      }\n    }\n  ],\n  \"context\": {\n    \"key_0\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"timeout\",\n  \"message\": \"string\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.oximy.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3fe3de14-d4ab-4d45-bab3-5ec1482778ae",
+    "name": "Oximy Public Init Policy API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Oximy Public API backs the official Oximy SDKs. It initializes a project (settings + policy), ingests LLM telemetry events, serves the active policy configuration, and evaluates content against server-side (SLM) policy rules. This description was reconstructed faithfully from the published `oximy` npm SDK (v0.0.7) source — endpoint paths, HTTP methods, auth headers, and request and response shapes are taken verbatim from the SDK; it is not an official Oximy-published OpenAPI document.\n\nContact Support:\n Name: Oximy Support\n Email: support@oximy.com",
+      "type": "text/plain"
+    }
+  }
+}

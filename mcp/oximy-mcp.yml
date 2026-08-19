@@ -7,24 +7,27 @@ server:
   transport: http
   url: null
 docs: https://docs.oximy.com/docs/developer/mcp-gateway
-notes: >-
-  Oximy ships an MCP GATEWAY component (docs: docs.oximy.com/docs/developer/mcp-gateway)
-  that proxies, audits, classifies, and applies tool policy to outbound MCP tool
-  calls made by governed applications — it is a governance proxy for OTHER MCP
-  servers, not a hosted Oximy MCP endpoint exposing the Public API. No official
-  remote/hosted Oximy MCP server URL is published as of this pass. The tools below
-  are DERIVED candidates (one per Public API operation) for a would-be MCP wrapper,
-  status: candidate.
+notes: 'Oximy ships an MCP GATEWAY component (docs: docs.oximy.com/docs/developer/mcp-gateway) that proxies,
+  audits, classifies, and applies tool policy to outbound MCP tool calls made by governed applications
+  — it is a governance proxy for OTHER MCP servers, not a hosted Oximy MCP endpoint exposing the Public
+  API. No official remote/hosted Oximy MCP server URL is published as of this pass. The tools below are
+  DERIVED candidates (one per Public API operation) for a would-be MCP wrapper, status: candidate.'
 tools:
-  - name: init_project
-    description: Fetch project settings and active policy configuration.
-    source_operation: openapi/oximy-public-api-openapi.yml#initProject
-  - name: ingest_event
-    description: Submit a normalized LLM telemetry event.
-    source_operation: openapi/oximy-public-api-openapi.yml#ingestEvent
-  - name: get_policy
-    description: Retrieve the current policy configuration for the project.
-    source_operation: openapi/oximy-public-api-openapi.yml#getPolicy
-  - name: evaluate_policy
-    description: Evaluate content against server-side (SLM) policy rules.
-    source_operation: openapi/oximy-public-api-openapi.yml#evaluatePolicy
+- name: init_project
+  description: Fetch project settings and active policy configuration.
+  source_operation: openapi/oximy-public-api-openapi.yml#initProject
+- name: ingest_event
+  description: Submit a normalized LLM telemetry event.
+  source_operation: openapi/oximy-public-api-openapi.yml#ingestEvent
+- name: get_policy
+  description: Retrieve the current policy configuration for the project.
+  source_operation: openapi/oximy-public-api-openapi.yml#getPolicy
+- name: evaluate_policy
+  description: Evaluate content against server-side (SLM) policy rules.
+  source_operation: openapi/oximy-public-api-openapi.yml#evaluatePolicy
+deployment:
+  mode: none
+  verified: derived
+  tools: 4
+  checked: '2026-08-12'
+  source: catalog MCP census
