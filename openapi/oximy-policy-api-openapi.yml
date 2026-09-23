@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Oximy Public Init Policy API
+  title: Oximy Public Policy API
   version: '1.0'
   summary: Telemetry ingestion and AI-usage policy enforcement for LLM applications.
   description: The Oximy Public API backs the official Oximy SDKs. It initializes a project (settings + policy), ingests LLM telemetry events, serves the active policy configuration, and evaluates content against server-side (SLM) policy rules. This description was reconstructed faithfully from the published `oximy` npm SDK (v0.0.7) source — endpoint paths, HTTP methods, auth headers, and request and response shapes are taken verbatim from the SDK; it is not an official Oximy-published OpenAPI document.
@@ -71,6 +71,68 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: object
+      description: Fallback error envelope (SDK-side OximyError shape).
+      properties:
+        code:
+          type: string
+          enum:
+          - init_failed
+          - telemetry_failed
+          - policy_fetch_failed
+          - policy_evaluation_failed
+          - invalid_config
+          - network_error
+          - timeout
+          - unknown
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    EvaluateRequest:
+      type: object
+      description: SLM rule evaluation request. The SDK sends either a single-rule shape (rule_id + content + context) or a batch shape (projectId + requestId + content + rules[]).
+      properties:
+        projectId:
+          type: string
+        requestId:
+          type: string
+        rule_id:
+          type: string
+        content:
+          type: string
+        rules:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              match:
+                type: object
+                additionalProperties: true
+              action:
+                type: object
+                additionalProperties: true
+              target:
+                type: object
+                additionalProperties: true
+        context:
+          type: object
+          additionalProperties: true
+    PolicyConfig:
+      type: object
+      properties:
+        version:
+          type: integer
+        mode:
+          $ref: '#/components/schemas/PolicyMode'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
     PolicyRule:
       type: object
       properties:
@@ -107,6 +169,12 @@ components:
           - medium
           - high
           - critical
+    PolicyMode:
+      type: string
+      enum:
+      - shadow
+      - quarantine
+      - enforce
     EvaluateResponse:
       type: object
       properties:
@@ -136,74 +204,6 @@ components:
                 type: integer
               confidence:
                 type: number
-    EvaluateRequest:
-      type: object
-      description: SLM rule evaluation request. The SDK sends either a single-rule shape (rule_id + content + context) or a batch shape (projectId + requestId + content + rules[]).
-      properties:
-        projectId:
-          type: string
-        requestId:
-          type: string
-        rule_id:
-          type: string
-        content:
-          type: string
-        rules:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              match:
-                type: object
-                additionalProperties: true
-              action:
-                type: object
-                additionalProperties: true
-              target:
-                type: object
-                additionalProperties: true
-        context:
-          type: object
-          additionalProperties: true
-    PolicyMode:
-      type: string
-      enum:
-      - shadow
-      - quarantine
-      - enforce
-    Error:
-      type: object
-      description: Fallback error envelope (SDK-side OximyError shape).
-      properties:
-        code:
-          type: string
-          enum:
-          - init_failed
-          - telemetry_failed
-          - policy_fetch_failed
-          - policy_evaluation_failed
-          - invalid_config
-          - network_error
-          - timeout
-          - unknown
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
-    PolicyConfig:
-      type: object
-      properties:
-        version:
-          type: integer
-        mode:
-          $ref: '#/components/schemas/PolicyMode'
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyRule'
   securitySchemes:
     bearerAuth:
       type: http
