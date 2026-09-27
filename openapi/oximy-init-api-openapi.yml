@@ -42,37 +42,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
-      type: object
-      description: Fallback error envelope (SDK-side OximyError shape).
-      properties:
-        code:
-          type: string
-          enum:
-          - init_failed
-          - telemetry_failed
-          - policy_fetch_failed
-          - policy_evaluation_failed
-          - invalid_config
-          - network_error
-          - timeout
-          - unknown
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
-    PolicyConfig:
-      type: object
-      properties:
-        version:
-          type: integer
-        mode:
-          $ref: '#/components/schemas/PolicyMode'
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyRule'
     PolicyRule:
       type: object
       properties:
@@ -131,6 +100,37 @@ components:
           oneOf:
           - $ref: '#/components/schemas/PolicyConfig'
           - type: 'null'
+    PolicyConfig:
+      type: object
+      properties:
+        version:
+          type: integer
+        mode:
+          $ref: '#/components/schemas/PolicyMode'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+    Error:
+      type: object
+      description: Fallback error envelope (SDK-side OximyError shape).
+      properties:
+        code:
+          type: string
+          enum:
+          - init_failed
+          - telemetry_failed
+          - policy_fetch_failed
+          - policy_evaluation_failed
+          - invalid_config
+          - network_error
+          - timeout
+          - unknown
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
     PolicyMode:
       type: string
       enum:
