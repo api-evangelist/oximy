@@ -71,6 +71,52 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    PolicyConfig:
+      type: object
+      properties:
+        version:
+          type: integer
+        mode:
+          $ref: '#/components/schemas/PolicyMode'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
+    PolicyMode:
+      type: string
+      enum:
+      - shadow
+      - quarantine
+      - enforce
+    EvaluateResponse:
+      type: object
+      properties:
+        triggered:
+          type: boolean
+        confidence:
+          type: number
+        matches:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        transformedContent:
+          type: string
+        detections:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              value:
+                type: string
+              start:
+                type: integer
+              end:
+                type: integer
+              confidence:
+                type: number
     PolicyRule:
       type: object
       properties:
@@ -107,17 +153,26 @@ components:
           - medium
           - high
           - critical
-    PolicyConfig:
+    Error:
       type: object
+      description: Fallback error envelope (SDK-side OximyError shape).
       properties:
-        version:
-          type: integer
-        mode:
-          $ref: '#/components/schemas/PolicyMode'
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyRule'
+        code:
+          type: string
+          enum:
+          - init_failed
+          - telemetry_failed
+          - policy_fetch_failed
+          - policy_evaluation_failed
+          - invalid_config
+          - network_error
+          - timeout
+          - unknown
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
     EvaluateRequest:
       type: object
       description: SLM rule evaluation request. The SDK sends either a single-rule shape (rule_id + content + context) or a batch shape (projectId + requestId + content + rules[]).
@@ -149,61 +204,6 @@ components:
         context:
           type: object
           additionalProperties: true
-    Error:
-      type: object
-      description: Fallback error envelope (SDK-side OximyError shape).
-      properties:
-        code:
-          type: string
-          enum:
-          - init_failed
-          - telemetry_failed
-          - policy_fetch_failed
-          - policy_evaluation_failed
-          - invalid_config
-          - network_error
-          - timeout
-          - unknown
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
-    EvaluateResponse:
-      type: object
-      properties:
-        triggered:
-          type: boolean
-        confidence:
-          type: number
-        matches:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        transformedContent:
-          type: string
-        detections:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-              value:
-                type: string
-              start:
-                type: integer
-              end:
-                type: integer
-              confidence:
-                type: number
-    PolicyMode:
-      type: string
-      enum:
-      - shadow
-      - quarantine
-      - enforce
   securitySchemes:
     bearerAuth:
       type: http

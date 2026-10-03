@@ -159,15 +159,6 @@ components:
             metadata:
               type: object
               additionalProperties: true
-    EventResponse:
-      type: object
-      properties:
-        received:
-          type: boolean
-        eventId:
-          type: string
-        configVersion:
-          type: integer
     Error:
       type: object
       description: Fallback error envelope (SDK-side OximyError shape).
@@ -188,6 +179,15 @@ components:
         details:
           type: object
           additionalProperties: true
+    EventResponse:
+      type: object
+      properties:
+        received:
+          type: boolean
+        eventId:
+          type: string
+        configVersion:
+          type: integer
   securitySchemes:
     bearerAuth:
       type: http
