@@ -48,6 +48,35 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    EventResponse:
+      type: object
+      properties:
+        received:
+          type: boolean
+        eventId:
+          type: string
+        configVersion:
+          type: integer
+    Error:
+      type: object
+      description: Fallback error envelope (SDK-side OximyError shape).
+      properties:
+        code:
+          type: string
+          enum:
+          - init_failed
+          - telemetry_failed
+          - policy_fetch_failed
+          - policy_evaluation_failed
+          - invalid_config
+          - network_error
+          - timeout
+          - unknown
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
     OximyEvent:
       type: object
       required:
@@ -159,35 +188,6 @@ components:
             metadata:
               type: object
               additionalProperties: true
-    Error:
-      type: object
-      description: Fallback error envelope (SDK-side OximyError shape).
-      properties:
-        code:
-          type: string
-          enum:
-          - init_failed
-          - telemetry_failed
-          - policy_fetch_failed
-          - policy_evaluation_failed
-          - invalid_config
-          - network_error
-          - timeout
-          - unknown
-        message:
-          type: string
-        details:
-          type: object
-          additionalProperties: true
-    EventResponse:
-      type: object
-      properties:
-        received:
-          type: boolean
-        eventId:
-          type: string
-        configVersion:
-          type: integer
   securitySchemes:
     bearerAuth:
       type: http

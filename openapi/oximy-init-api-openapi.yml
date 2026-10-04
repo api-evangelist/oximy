@@ -42,23 +42,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    PolicyConfig:
-      type: object
-      properties:
-        version:
-          type: integer
-        mode:
-          $ref: '#/components/schemas/PolicyMode'
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyRule'
-    PolicyMode:
-      type: string
-      enum:
-      - shadow
-      - quarantine
-      - enforce
     InitResponse:
       type: object
       properties:
@@ -117,6 +100,23 @@ components:
           - medium
           - high
           - critical
+    PolicyMode:
+      type: string
+      enum:
+      - shadow
+      - quarantine
+      - enforce
+    PolicyConfig:
+      type: object
+      properties:
+        version:
+          type: integer
+        mode:
+          $ref: '#/components/schemas/PolicyMode'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyRule'
     Error:
       type: object
       description: Fallback error envelope (SDK-side OximyError shape).
