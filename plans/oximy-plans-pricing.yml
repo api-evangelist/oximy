@@ -1,0 +1,69 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-07'
+method: searched
+source: https://oximy.com/pricing
+sources:
+- https://oximy.com/pricing
+provenance:
+  tool: all/0-working/economics/harvest_pricing.py
+  run: 20261007T112025
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: usage-other
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-07'
+published: true
+note: Per-device pricing for Mac AI policy enforcement; enterprise tier is custom.
+plan_count: 3
+currency: USD
+plans:
+- name: Free trial
+  price_text: 1 Mac for 3 days
+  period: none
+  unit: device
+  included_quota: No card needed, Every policy feature
+- name: Self-serve
+  price_text: $10 per device per month or $100 per device per year (2 months free)
+  currency: USD
+  period: month
+  unit: device
+  included_quota: 1 to 50 devices, Every policy feature, Add devices any time
+- name: 50+ devices
+  price_text: Custom pricing
+  period: none
+  unit: device
+  included_quota: MDM deployment, SSO and SCIM, Evidence export and longer retention, Invoicing
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  units:
+  - object
+  plans:
+  - name: Free trial
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - object
+    periods:
+    - none
+  - name: Self-serve
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - object
+    periods:
+    - month
+  - name: 50+ devices
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - object
+    periods:
+    - none
